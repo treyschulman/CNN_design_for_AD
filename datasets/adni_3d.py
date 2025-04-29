@@ -64,8 +64,9 @@ class ADNI_3D(data.Dataset):
 
     def __getitem__(self, idx):
         try:
-            path = os.path.join(self.dir_to_scans,self.subject_tsv.iloc[idx].participant_id,
-                self.subject_tsv.iloc[idx].session_id,'t1/spm/segmentation/normalized_space')
+            subject_id = self.subject_tsv.iloc[idx]['participant_id']
+            session_id = self.subject_tsv.iloc[idx]['session_id']
+            path = os.path.join(self.dir_to_scans, subject_id, session_id, 't1', 'spm', 'segmentation', 'normalized_space')
             all_segs = list(os.listdir(path))
             if len(all_segs) == 0:
                 raise FileNotFoundError(f"No segmentations found for {subject_id}")
