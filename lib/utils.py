@@ -3,7 +3,7 @@ import torch
 from sklearn.preprocessing import label_binarize
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_curve, auc
-from scipy import interp
+from numpy import interp
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import warnings
