@@ -51,8 +51,6 @@ optimizer:
     lr: 0.01
     weight_decay: 0.0
     momentum: 0.9
-    gamma: 0.1
-    step_size: 40
 
 exp_name: oasis_experiment
 file_name: ./saved_model/oasis_experiment
