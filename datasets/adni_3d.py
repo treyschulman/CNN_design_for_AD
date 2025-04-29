@@ -67,6 +67,8 @@ class ADNI_3D(data.Dataset):
             path = os.path.join(self.dir_to_scans,self.subject_tsv.iloc[idx].participant_id,
                 self.subject_tsv.iloc[idx].session_id,'t1/spm/segmentation/normalized_space')
             all_segs = list(os.listdir(path))
+            if len(all_segs) == 0:
+                raise FileNotFoundError(f"No segmentations found for {subject_id}")
             if self.subject_tsv.iloc[idx].diagnosis == 'CN':
                 label = 0
             elif self.subject_tsv.iloc[idx].diagnosis == 'MCI':
@@ -84,8 +86,6 @@ class ADNI_3D(data.Dataset):
             age = list(np.arange(0.0,120.0,0.5)).index(self.subject_tsv.iloc[idx].age_rounded) #list(np.arange(0.0,25.0)).index(self.subject_tsv.iloc[idx].education_level)#
 
             idx_out = self.index_dic[self.subject_tsv.iloc[idx].participant_id]
-
-            
 
             for seg_name in all_segs:
                 if 'Space_T1w' in seg_name:
@@ -107,6 +107,7 @@ class ADNI_3D(data.Dataset):
             print(f"Failed to load #{idx}: {path}")
             print(f"Errors encountered: {e}")
             print(traceback.format_exc())
+            raise IndexError(f"[IndexError] Failed loading subject at index {idx}: {e}")
             return None,None,None,None
         return image.astype(np.float32),label,idx_out,mmse,cdr_sub,age
 
