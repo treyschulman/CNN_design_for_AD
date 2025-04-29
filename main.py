@@ -289,8 +289,15 @@ def validate(cfg,val_loader,main_model,criterion,epoch):
     #plot AUC curves
     logit_all = torch.cat(logit_all).numpy()
     target_all = torch.cat(target_all).numpy()
-    acc_all = balanced_accuracy_score(target_all, np.argmax(logit_all,1))
-    plotting_fpr, plotting_tpr, roc_auc = get_auc_data(logit_all, target_all,cfg['model']['n_label'])
+  
+    # Safety check for NaNs
+    if np.isnan(logit_all).any() or np.isnan(target_all).any():
+        print("⚠️ Warning: NaN detected in logits or targets during validation. Skipping AUC calculation.")
+        acc_all = 0.0  # dummy
+        plotting_fpr, plotting_tpr, roc_auc = None, None, None
+    else:
+        acc_all = balanced_accuracy_score(target_all, np.argmax(logit_all, 1))
+        plotting_fpr, plotting_tpr, roc_auc = get_auc_data(logit_all, target_all, cfg['model']['n_label'])
     
 
     return main_losses.avg, acc_all*100, confusion_matrix, [plotting_fpr, plotting_tpr, roc_auc]
