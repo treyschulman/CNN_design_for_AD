@@ -3,46 +3,62 @@ NAME: CNN_ADNI
 # Dataset config
 DATASET: ADNI
 DIR_TO_DATASET: /content/drive/MyDrive/project/cnn_input
-DIR_TO_TSV: /content/drive/MyDrive/project/datasets/files
+DIR_TO_TSV: /content/drive/MyDrive/project/CNN_design_for_AD/datasets/files
 DIR_TO_LOGS: /content/drive/MyDrive/project/CNN_design_for_AD/logs
 DIR_TO_SAVE_MODEL: /content/drive/MyDrive/project/CNN_design_for_AD/checkpoint
 
-# Model architecture config
-BACKBONE: simplecnn
-ARCH: ours
-EXPANSION: 8
-FEATURE_DIM: 1024
-INPUT_CHANNEL: 1
-N_LABEL: 3
-NHID: 512
-NORM_TYPE: Instance
-NUM_BLOCKS: 0
-TYPE_NAME: conv3x3x3
+data:
+  data_root_dir: /content/drive/MyDrive/project/cnn_input
+  dir_to_scans: dir_to_scans
+  dir_to_tsv: /content/drive/MyDrive/project/datasets/files
+  batch_size: 4
+  val_batch_size: 2
+  workers: 4
+  percentage_usage: 1.0
 
-# Optimizer config
-OPTIMIZER_METHOD: SGD
-LR: 0.01
-WEIGHT_DECAY: 0.0
-MOMENTUM: 0.9
-GAMMA: 0.1
-STEP_SIZE: 40
+model:
+  arch: ours
+  input_channel: 1
+  nhid: 512
+  feature_dim: 1024
+  n_label: 3
+  expansion: 8
+  num_blocks: 0
+  type_name: conv3x3x3
+  norm_type: Instance
 
-# Training config
-NUM_CLASSES: 2
-BATCH_SIZE: 4
-VAL_BATCH_SIZE: 2
-NUM_WORKERS: 2
-NUM_EPOCHS: 200
-SEED: 2020
-PERCENTAGE_USAGE: 1.0
+adv_model:
+  nhid: 36
+  out_dim: 12
+
+mmse_model:
+  nhid: 64
+
+training_parameters:
+  use_age: False
+  pretrain: null
+  max_iter: 16000
+  start_epoch: 0
+  epochs: 200
+  print_freq: 10
+  max_grad_l2_norm: null
+  report_interval: 100
+  snapshot_interval: 1000
+
+optimizer:
+  method: SGD
+  par:
+    lr: 0.01
+    weight_decay: 0.0
+    momentum: 0.9
+    gamma: 0.1
+    step_size: 40
+
+exp_name: oasis_experiment
+file_name: ./saved_model/oasis_experiment
+
+visdom:
+  port: 8064
+  server: localhost
+
 USE_VISDOM: False
-PRINT_FREQ: 10
-REPORT_INTERVAL: 100
-SNAPSHOT_INTERVAL: 1000
-START_EPOCH: 0
-
-# Extra
-EXP_NAME: oasis_experiment
-PRETRAIN: null
-MAX_ITER: 16000
-USE_AGE: False
