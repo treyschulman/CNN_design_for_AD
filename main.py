@@ -54,7 +54,7 @@ best_loss = 1000
 best_micro_auc = 0
 best_macro_auc = 0
 with open(os.path.join('./'+arguments.config+'.yaml'), 'r') as f:
-    cfg = yaml.load(f)
+    cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 if arguments.expansion > 0:
     cfg['model']['expansion'] = arguments.expansion
