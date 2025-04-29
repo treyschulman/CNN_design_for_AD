@@ -139,21 +139,27 @@ def main():
         if cfg['visdom']['server'] is not None:
             viz_plot.plot(epoch, train_loss, val_loss, train_acc, val_acc, confusion_matrix, auc_outs)
             
+        # Safe defaults
+        is_best_micro_auc = False
+        is_best_macro_auc = False
+        is_best_auc = False
 
+        if auc_outs is not None and auc_outs[2] is not None:
+            is_best_micro_auc = (auc_outs[2][len(auc_outs[2])-2] >= best_micro_auc)
+            is_best_macro_auc = (auc_outs[2][len(auc_outs[2])-1] > best_macro_auc)
+            best_micro_auc = max(auc_outs[2][len(auc_outs[2])-2], best_micro_auc)
+            best_macro_auc = max(auc_outs[2][len(auc_outs[2])-1], best_macro_auc)
+            is_best_auc = (auc_outs[2][len(auc_outs[2])-2] > 0.8) & (auc_outs[2][len(auc_outs[2])-1] > 0.8)
+        else:
+            print(f"⚠️ Warning: Skipping AUC comparison at epoch {epoch} due to NaNs.")
 
         # Save model
         is_best = (val_acc > best_prec1) 
         lowest_loss = (val_loss < best_loss)
-        is_best_micro_auc = (auc_outs[2][len(auc_outs[2])-2]>= best_micro_auc)
-        is_best_macro_auc = (auc_outs[2][len(auc_outs[2])-1]> best_macro_auc)
-
+      
         best_prec1 = max(val_acc, best_prec1)
         best_loss = min(val_loss,best_loss)
 
-        best_micro_auc = max(auc_outs[2][len(auc_outs[2])-2], best_micro_auc)
-        best_macro_auc = max(auc_outs[2][len(auc_outs[2])-1], best_macro_auc)
-
-        is_best_auc = (auc_outs[2][len(auc_outs[2])-2]>0.8) & (auc_outs[2][len(auc_outs[2])-1]>0.8)
         save_checkpoint({
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
