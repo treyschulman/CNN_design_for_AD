@@ -89,7 +89,7 @@ class ADNI_3D(data.Dataset):
 
             for seg_name in all_segs:
                 if 'Space_T1w' in seg_name:
-                    image = nib.load(os.path.join(path,seg_name)).get_data().squeeze()
+                    image = nib.load(os.path.join(path,seg_name)).get_fdata().squeeze()
                     image[np.isnan(image)] = 0.0
                     image = (image - image.min())/(image.max() - image.min() + 1e-6)
         
