@@ -1,16 +1,21 @@
-file_name: ./saved_model/1007_pooling_age
+NAME: CNN_ADNI
+
+# Dataset config
+DATASET: ADNI
+DIR_TO_DATASET: /content/drive/MyDrive/project/cnn_input
+DIR_TO_TSV: /content/drive/MyDrive/project/datasets/files
+DIR_TO_LOGS: /content/drive/MyDrive/project/CNN_design_for_AD/logs
+DIR_TO_SAVE_MODEL: /content/drive/MyDrive/project/CNN_design_for_AD/checkpoint
+
 data:
-  data_root_dir: data/
+  data_root_dir: /content/drive/MyDrive/project/cnn_input
   dir_to_scans: dir_to_scans
-  dir_to_tsv: ./datasets/files
+  dir_to_tsv: /content/drive/MyDrive/project/datasets/files
   batch_size: 4
   val_batch_size: 2
   workers: 4
   percentage_usage: 1.0
-exp_name: 1007_pooling_age
-visdom:
-  port: 8064 
-  server: skygpu07 
+
 model:
   arch: ours
   input_channel: 1
@@ -21,19 +26,22 @@ model:
   num_blocks: 0
   type_name: conv3x3x3
   norm_type: Instance
+
 adv_model:
   nhid: 36
   out_dim: 12
+
 mmse_model:
   nhid: 64
+
 training_parameters:
   use_age: False
-  pretrain:  #dir to saved model here
+  pretrain: null
   max_iter: 16000
   start_epoch: 0
   epochs: 200
   print_freq: 10
-  max_grad_l2_norm:
+  max_grad_l2_norm: null
   report_interval: 100
   snapshot_interval: 1000
 
@@ -41,5 +49,16 @@ optimizer:
   method: SGD
   par:
     lr: 0.01
-    weight_decay: 0.000
+    weight_decay: 0.0
+    momentum: 0.9
+    gamma: 0.1
+    step_size: 40
 
+exp_name: oasis_experiment
+file_name: ./saved_model/oasis_experiment
+
+visdom:
+  port: 8064
+  server: localhost
+
+USE_VISDOM: False
