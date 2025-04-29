@@ -57,6 +57,6 @@ file_name: ./saved_model/oasis_experiment
 
 visdom:
   port: 8064
-  server: 0bf9-34-145-111-138.ngrok-free.app
+  server: abf4-34-125-45-131.ngrok-free.app
 
 USE_VISDOM: True
