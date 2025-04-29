@@ -256,6 +256,9 @@ def validate(cfg,val_loader,main_model,criterion,epoch):
         main_loss, logit = main_model([input, age], target)
         main_loss = main_loss.mean()
 
+        if torch.isnan(logit).any():
+            print(f"NaN detected in model output at validation step {i}")
+
         logit_all.append(torch.tensor(logit.data.cpu()))
         target_all.append(torch.tensor(target.data.cpu()))
         acc,_ = accuracy(logit.data.cpu(),target.data.cpu())
