@@ -57,6 +57,6 @@ file_name: ./saved_model/oasis_experiment
 
 visdom:
   port: 8064
-  server: localhost
+  server: null
 
 USE_VISDOM: False
