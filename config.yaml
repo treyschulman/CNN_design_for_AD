@@ -8,8 +8,8 @@ DIR_TO_LOGS: /content/drive/MyDrive/project/CNN_design_for_AD/logs
 DIR_TO_SAVE_MODEL: /content/drive/MyDrive/project/CNN_design_for_AD/checkpoint
 
 data:
-  data_root_dir: /content/drive/MyDrive/project/dir_to_scans/
-  dir_to_scans: subjects
+  data_root_dir: /content/drive/MyDrive/project/cnn_input/
+  dir_to_scans: /content/drive/MyDrive/project/cnn_input/train/
   dir_to_tsv: /content/drive/MyDrive/project/CNN_design_for_AD/datasets/files
   batch_size: 4
   val_batch_size: 2
