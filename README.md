@@ -1,13 +1,6 @@
 # Deep learning model for early Alzheimer’s disease detection from structural MRIs
 This repository contains code for a reproduction of a  medical [paper](https://www.nature.com/articles/s41598-022-20674-x) and a machine learning [paper](http://proceedings.mlr.press/v116/liu20a) on deep learning for dementia. 
 
-
-<p float="left" align="center">
-<img src="overview.png" width="800" /> 
-<figcaption align="center">
-Figure: Overview of the deep learning framework and performance for Alzheimer’s automatic diagnosis. (a) Deep learning framework used for automatic diagnosis. 
-  
-
 ## Prerequisites
 - Python 3.6
 - PyTorch 0.4
@@ -25,39 +18,69 @@ Figure: Overview of the deep learning framework and performance for Alzheimer’
 
 ## Data Preprocessing
 Data Preprocessing with Clinica:
-1. **Convert data into BIDS format**: please read the docs on [Clinica website](https://aramislab.paris.inria.fr/clinica/docs/public/dev/Converters/OASIS2BIDS/), and install required softwares and use the previously downloaded clinical files. Note that we first preprocess the training set to generate the template and use the template to preprocess validation and test set. You can find the script we use to run the converter at /datasets/files:
+1. **Convert data into BIDS format**: please read the docs on [Clinica website](https://aramislab.paris.inria.fr/clinica/docs/public/dev/Converters/OASIS2BIDS/), and install required softwares and use the previously downloaded clinical files. Note that we first preprocess the training set to generate the template and use the template to preprocess validation and test set. The dataset was split through stratified sampling by subject with `datasets/files/split_oasis_subjects.py`
+
+Data was converted to BIDS format with the commands below:
+
 ```
-run_convert.sh
+conda activate clinicaEnv
+export SPM_HOME=/path/to/project/spm  
+clinica convert oasis-to-bids /path/to/oasis/discs /path/to/clinical_csv /path/to/bids_output
 ```
 
-2. **preprocess converted and splitted data**: you can refer our scripts at /datasets/files. For training data, refer:
+2. **Preprocess converted and splitted data**: Images needed to be centered and then preprocessed. For training data, we ran:
 ```
-run_adni_preprocess.sh
+clinica iotools center-nifti \                                                                        
+  /path/to/project/bids_data_split/train \         
+  /path/to/project/bids_data_split/train_centered \      
+  --modality t1w
+
+clinica run t1-volume \                                                    
+  /path/to/project/bids_data_split/train_centered \
+  /path/to/project/bids_data_split/clinica_output_train \
+  TRAIN \
+  -tsv /path/to/project/bids_data_split/train_oasis.tsv \
+  -wd /path/to/project/bids_data_split/clinica_wd_train \
+  -np 8
 ```
-For val and test refer:
+For val and test we ran:
 ```
-run_adni_preprocess_val.sh
+clinica iotools center-nifti \                                                              
+  /path/to/project/bids_data_split/val \           
+  /path/to/project/bids_data_split/val_centered \        
+  --modality t1w
+
+clinica run t1-volume \                                                                     
+  /path/to/project/bids_data_split/val_centered \  
+  /path/to/project/bids_data_split/clinica_output_val \  
+  TRAIN \       
+  -tsv /path/to/project/bids_data_split/val_oasis.tsv \
+  -wd /path/to/project/bids_data_split/clinica_wd_val \
+  -np 8
 ```
 and 
 ```
-run_adni_preprocess_test.sh
+clinica iotools center-nifti \                                                              
+  /path/to/project/bids_data_split/test \           
+  /path/to/project/bids_data_split/test_centered \        
+  --modality t1w
+
+clinica run t1-volume \                                                                     
+  /path/to/project/bids_data_split/test_centered \  
+  /path/to/project/bids_data_split/clinica_output_test \  
+  TEST \       
+  -tsv /path/to/project/bids_data_split/test_oasis.tsv \
+  -wd /path/to/project/bids_data_split/clinica_wd_test \
+  -np 8
 ```
 
-## Examples in the preprocessed dataset
-Here are some examples of scans for each categories in our test dataset:
-
-<p align="center">
-<img src="data_examples/CN_example.png" width="600" /> 
-<img src="data_examples/MCI_example.png" width="600" /> 
-<img src="data_examples/AD_example.png" width="600" /> 
-</p>
-
+Note: The clinica software may be misidentified as malware. The commands below may need to be ran in order to complete preprocessing (use `datasets/files/approve_mex.sh`):
+```
+chmod +x approve_mex.sh
+./approve_mex.sh
+```
 ## Neural Network Training
-Train the network ADNI dataset:
-
-```
-python main.py
-```
+Training the network OASIS dataset was done in Colab with `model_training.ipynb`
 
 You can create your own config files and add a **--config** flag to indicate the name of your config files.
 
