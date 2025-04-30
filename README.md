@@ -1,45 +1,12 @@
-# Generalizable deep learning model for early Alzheimer’s disease detection from structural MRIs
-This repository contains code for a medical [paper](https://www.nature.com/articles/s41598-022-20674-x) and a machine learning [paper](http://proceedings.mlr.press/v116/liu20a) on deep learning for dementia.
-In the medical [paper](https://www.nature.com/articles/s41598-022-20674-x), we compared the deep learning model with volume/thickness models on external independent cohort from [NACC](https://naccdata.org/). The volume and thickness data are extracted using the Freesurfer and quality controled by radiologists. 
+# Deep learning model for early Alzheimer’s disease detection from structural MRIs
+This repository contains code for a reproduction of a  medical [paper](https://www.nature.com/articles/s41598-022-20674-x) and a machine learning [paper](http://proceedings.mlr.press/v116/liu20a) on deep learning for dementia. 
 
-If you would like to access the volume and thickness data as well as the subject and scan ID, please download it from the [/Data](https://github.com/NYUMedML/CNN_design_for_AD/tree/master/Data) folder.
+
 <p float="left" align="center">
 <img src="overview.png" width="800" /> 
 <figcaption align="center">
 Figure: Overview of the deep learning framework and performance for Alzheimer’s automatic diagnosis. (a) Deep learning framework used for automatic diagnosis. 
   
-
-  **Contact:** [Sheng Liu](https://shengliu66.github.io/)
-
-
-## Introduction
-In this project, we focus on how to design CNN for Alzheimer's detection. we provide evidence that 
-* instance normalization outperforms batch normalization  
-* early spatial downsampling negatively affects performance
-* widening the model brings consistent gains while increasing the depth does not
-* incorporating age information yields moderate improvement. 
-  
-Compare with the volume/thickness model, the deep-learning model is
-  * accurate
-  * significantly faster than the volume/thickness model in which the volumes and thickness need to be extracted beforehand. 
-  * can also be used to forecast progression:
-  * relies on a wide range of regions associated with Alzheimer's disease. 
-  * can automatically learn to identify imaging biomarkers that are predictive of Alzheimer's disease, and leverage them to achieve accurate early detection of the disease.
-
-
-Together, these insights yield an increment of approximately 14% in test accuracy over existing models.
-<!--   
-<p float="left" align="center">
-<img src="data_examples/visualization_02.png" width="200" /> 
-<img src="data_examples/visualization_01.png" width="200" /> 
-<img src="data_examples/visualization_03.png" width="200" /> 
-</p> -->
-
-<p float="left" align="center">
-<img src="all_resized.gif" width="500" /> 
-<figcaption align="center">
-Figure 1. Visualization of the aggregated importance of each voxel (in yellow) in the deep learning model when classifying subjects into Cognitive Normal, Mild Cognitive Impairement, and Alzheimer's Disease. 
-
 
 ## Prerequisites
 - Python 3.6
@@ -50,17 +17,15 @@ Figure 1. Visualization of the aggregated importance of each voxel (in yellow) i
 - numpy
 - visdom
 
-## License
-This repository is licensed under the terms of the GNU AGPLv3 license.
 
-## Download ADNI data
-1. Request approval and register at [ADNI website](http://adni.loni.usc.edu/data-samples/access-data/)
-2. Download both the scans and the clinical data. From the main page click on `PROJECTS` and `ADNI`. To download the imaging data, click on `Download` and choose `Image collections`. In the `Advanced search` tab, untick `ADNI 3` and tick `MRI` to download all the MR images.
-3. In the `Advanced search results` tab, click Select `All` and `Add To Collection`. Finally, in the `Data Collection` tab, select the collection you just created, tick `All` and click on `Advanced download`. We advise you to group files as 10 zip files. To download the clinical data, click on `Download` and choose `Study Data`. Select all the csv files which are present in `ALL` by ticking Select `ALL `tabular data and click Download.
+## Download OASIS data
+1. Download OASIS-1 data at [OASIS website](https://sites.wustl.edu/oasisbrains/home/oasis-1/)
+2. Download both the raw data scans and the clinical data. From the linked page scroll down to `Download Instructions`. To download the imaging data, click on `OASIS-1: Raw Data Download` and download all the MRI images.
+3. To download the clinical data, click on `OASIS-1: Demographic and Clinical Data` and download `CSV File with Demographic, and Clinical Data`.
 
 ## Data Preprocessing
 Data Preprocessing with Clinica:
-1. **Convert data into BIDS format**: please read the docs on [Clinica website](http://www.clinica.run/doc/DatabasesToBIDS/#adni-to-bids), and install required softwares and download the required clinical files. Note that we first preprocess the training set to generate the template and use the template to preprocess validation and test set. You can find the [link](https://drive.google.com/file/d/1KurgyjQP-KReEO0gf31xxjwE5R-xuSRB/view?usp=sharing) to download the template we used for data preprocessing. You can find the script we use to run the converter at /datasets/files:
+1. **Convert data into BIDS format**: please read the docs on [Clinica website](https://aramislab.paris.inria.fr/clinica/docs/public/dev/Converters/OASIS2BIDS/), and install required softwares and use the previously downloaded clinical files. Note that we first preprocess the training set to generate the template and use the template to preprocess validation and test set. You can find the script we use to run the converter at /datasets/files:
 ```
 run_convert.sh
 ```
