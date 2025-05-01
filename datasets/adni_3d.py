@@ -104,11 +104,11 @@ class ADNI_3D(data.Dataset):
             else:
                 image = self.centerCrop(image,96,96,96)
 
-        except Exception as e:
-            print(f"Failed to load #{idx}: {path}")
-            print(f"Errors encountered: {e}")
-            print(traceback.format_exc())
-            raise IndexError(f"[IndexError] Failed loading subject at index {idx}: {e}")
+            except Exception as e:
+                print(f"Failed to load #{idx}")
+                print(f"Errors encountered: {e}")
+                print(traceback.format_exc())
+                raise IndexError(f"[IndexError] Failed loading subject at index {idx}: {e}")
             return None,None,None,None
         return image.astype(np.float32),label,idx_out,mmse,cdr_sub,age
 
