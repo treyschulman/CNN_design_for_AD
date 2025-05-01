@@ -68,7 +68,7 @@ clinica iotools center-nifti \
 clinica run t1-volume \                                                                     
   /path/to/project/bids_data_split/test_centered \  
   /path/to/project/bids_data_split/clinica_output_test \  
-  TEST \       
+  TRAIN \       
   -tsv /path/to/project/bids_data_split/test_oasis.tsv \
   -wd /path/to/project/bids_data_split/clinica_wd_test \
   -np 8
