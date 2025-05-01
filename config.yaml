@@ -35,7 +35,7 @@ mmse_model:
   nhid: 64
 
 training_parameters:
-  use_age: False
+  use_age: True
   pretrain: null
   max_iter: 16000
   start_epoch: 0
@@ -48,7 +48,7 @@ training_parameters:
 optimizer:
   method: SGD
   par:
-    lr: 0.0001
+    lr: 0.01
     weight_decay: 0.0
     momentum: 0.9
 
